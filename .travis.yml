@@ -18,6 +18,6 @@ after-sucess:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Now take the above images and push them to Docker Hub
     - docker push prosid/multi-client
-    - docker push prosid/multi-nginix
+    - docker push prosid/multi-ngnix
     - docker push prosid/multi-server
     - docker push prosid/multi-worker
