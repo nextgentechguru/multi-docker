@@ -1,0 +1,23 @@
+language: generic
+sudo: required
+services:
+    - docker
+
+before-install:
+    - docker build -t prosid/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+    - docker run prosid/react-test npm test -- --coverage
+
+after-sucess:
+    - docker build -t prosid/multi-client ./client
+    - docker build -t prosid/multi-nginx ./nginx
+    - docker build -t prosid/multi-server ./server
+    - docker build -t prosid/multi-worker ./worker
+    # Login to Docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Now take the above images and push them to Docker Hub
+    - docker push prosid/multi-client
+    - docker push prosid/multi-nginix
+    - docker push prosid/multi-server
+    - docker push prosid/multi-worker
